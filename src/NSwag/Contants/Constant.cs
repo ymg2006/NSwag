@@ -1,0 +1,28 @@
+﻿
+using System.Collections.Generic;
+
+namespace NSwag.Contants
+{
+    public static class Constant
+    {
+        public static readonly List<string> IgnoreModules = new List<string>()
+        {
+            "jQuery"
+        };
+
+        public static readonly List<string> UtilitiesModules = new List<string>()
+        {
+            "throwException",
+            "FileParameter",
+            "FileResponse",
+            "SwaggerException",
+            "ServiceBase",
+            "blobToText"
+        };
+
+        public static List<string> TsBaseType = new List<string>()
+        {
+            "string","number","Date","undefined","any","boolean","void","{ [key: string]: any; }","{ [key: string]: string; }"
+        };
+    }
+}
