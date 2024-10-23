@@ -5,12 +5,12 @@ namespace NSwag.Contants
 {
     public static class Constant
     {
-        public static readonly List<string> IgnoreModules = new List<string>()
+        public static readonly List<string> IgnoreModules = new()
         {
             "jQuery"
         };
 
-        public static readonly List<string> UtilitiesModules = new List<string>()
+        public static readonly List<string> UtilitiesModules = new()
         {
             "throwException",
             "FileParameter",
@@ -20,9 +20,11 @@ namespace NSwag.Contants
             "blobToText"
         };
 
-        public static List<string> TsBaseType = new List<string>()
+        public static List<string> TsBaseType = new()
         {
             "string","number","Date","undefined","any","boolean","void","{ [key: string]: any; }","{ [key: string]: string; }"
         };
+
+        public static string UtilsName = "Utilities";
     }
 }

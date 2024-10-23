@@ -8,6 +8,7 @@ using NJsonSchema.CodeGeneration;
 using NJsonSchema.CodeGeneration.TypeScript;
 using NSwag.CodeGeneration.TypeScript;
 using NSwag.CodeGeneration.TypeScript.Models;
+using NSwag.Contants;
 using NSwag.Helpers;
 
 namespace NSwag.Generators;
@@ -35,7 +36,7 @@ public class UtilitiesScriptGenerator
             });
         _openApiDocument = openApiDocument;
         CaseConverter = caseConverter;
-        _utilitiesModuleName = caseConverter.Invoke("Utilities");
+        _utilitiesModuleName = caseConverter.Invoke(Constant.UtilsName);
     }
 
     public async Task GenerateUtilitiesFilesAsync(string outputDirectory)

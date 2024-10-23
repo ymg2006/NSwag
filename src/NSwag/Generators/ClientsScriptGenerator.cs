@@ -44,7 +44,7 @@ namespace NSwag.Generators
                 new TypeScriptClientGenerator(_openApiDocument, settings, _resolver);
 
             CaseConverter = caseConverter;
-            _utilitiesModuleName = caseConverter.Invoke("Utilities");
+            _utilitiesModuleName = caseConverter.Invoke(Constant.UtilsName);
         }
 
         public void SetDtoPath(string dtoPathName)

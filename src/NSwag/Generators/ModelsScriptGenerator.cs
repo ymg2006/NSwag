@@ -29,7 +29,7 @@ public class ModelsScriptGenerator
         _resolver = new TypeScriptTypeResolver(settings.TypeScriptGeneratorSettings);
         _resolver.RegisterSchemaDefinitions(_openApiDocument.Definitions);
         CaseConverter = caseConverter;
-        _utilitiesModuleName = caseConverter.Invoke("Utilities");
+        _utilitiesModuleName = caseConverter.Invoke(Constant.UtilsName);
     }
 
     public string DirName => _dtoDirName;
