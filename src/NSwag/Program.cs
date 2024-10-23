@@ -45,11 +45,11 @@ namespace NSwag
                 case "Title Case":
                     caseConverter = CaseConverters.ToTitleCase;
                     break;
-                case "ALL_CAPS_SNAKE_CASE Case":
+                case "ALL_CAPS_SNAKE_CASE":
                     caseConverter = CaseConverters.ToAllCapsSnakeCase;
                     break;
                 case "PascalCase":
-                    caseConverter = CaseConverters.ToPascalCase;
+                    caseConverter = x => x;
                     break;
                 default:
                     config.FileCase = "No conversion";
