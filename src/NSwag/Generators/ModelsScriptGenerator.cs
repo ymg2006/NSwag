@@ -56,7 +56,7 @@ public class ModelsScriptGenerator
         if (!string.IsNullOrWhiteSpace(_dtoDirName))
         {
             IoHelper.Delete(indexFile);
-            await File.AppendAllLinesAsync(indexFile, fileNames.Select(c => $"export * from './{c}';"), Encoding.UTF8);
+            await File.AppendAllLinesAsync(indexFile, fileNames.Select(c => $"export * from './{CaseConverter.Invoke(c)}';"), Encoding.UTF8);
         }
     }
 
