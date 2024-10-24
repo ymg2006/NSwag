@@ -57,12 +57,10 @@ namespace NSwag.Generators
             foreach (var clientClass in GenerateClientClasses())
             {
                 var path = Path.Combine(outputDirectory, CaseConverter.Invoke(clientClass.Key) + ".ts");
-                IoHelper.Delete(path);
                 var classCode = clientClass.Value;
                 var commonImportCode = await CommonCodeGenerator.GetCommonImportFromUtilitiesAsync(outputDirectory, _utilitiesModuleName);
-                classCode = commonImportCode + classCode;// CommonCodeGenerator.AppendImport(classCode, );
-                classCode = CommonCodeGenerator.AppendDisabledLint(classCode);
-                await File.WriteAllTextAsync(path, classCode, Encoding.UTF8);
+                classCode = commonImportCode + classCode;
+                await IoHelper.HandleFileAsync(path, CommonCodeGenerator.AppendDisabledLint(classCode));
             }
         }
 

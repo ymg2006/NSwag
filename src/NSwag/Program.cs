@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using NSwag.Commands;
 using NSwag.Contants;
 using NSwag.Generators;
 using NSwag.Helpers;
@@ -99,8 +98,6 @@ namespace NSwag
             await CommonCodeGenerator.GenerateIndexAsync(outputDirectory);
             stopwatch.Stop();
             Log.Information("Generate index file over, use time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
     }
 }

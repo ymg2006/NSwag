@@ -48,22 +48,20 @@ public class ModelsScriptGenerator
         foreach (var dtoClass in GenerateDtoClasses())
         {
             var path = Path.Combine(targetFolder, CaseConverter.Invoke(dtoClass.Key) + ".ts");
-            IoHelper.Delete(path);
-            await File.WriteAllTextAsync(path, dtoClass.Value, Encoding.UTF8);
+            await IoHelper.HandleFileAsync(path, dtoClass.Value);
             fileNames.Add(dtoClass.Key);
         }
         var indexFile = Path.Combine(targetFolder, "index.ts");
         if (!string.IsNullOrWhiteSpace(_dtoDirName))
         {
-            IoHelper.Delete(indexFile);
+            if (File.Exists(indexFile)) File.Delete(indexFile);
             await File.AppendAllLinesAsync(indexFile, fileNames.Select(c => $"export * from './{CaseConverter.Invoke(c)}';"), Encoding.UTF8);
         }
     }
 
     public IEnumerable<KeyValuePair<string, string>> GenerateDtoClasses()
     {
-        var defs = _openApiDocument.Definitions;
-        foreach (var definition in defs)
+        foreach (var definition in _openApiDocument.Definitions)
         {
             var code = GenerateDtoClass(definition.Value, definition.Key, out var className);
             yield return new KeyValuePair<string, string>(className, code);

@@ -43,8 +43,7 @@ public class UtilitiesScriptGenerator
     {
         var utilities = GenerateUtilities();
         var path = Path.Combine(outputDirectory, _utilitiesModuleName + ".ts");
-        IoHelper.Delete(path);
-        await File.WriteAllTextAsync(path, utilities, Encoding.UTF8);
+        await IoHelper.HandleFileAsync(path, utilities);
     }
 
     public string GenerateUtilities()

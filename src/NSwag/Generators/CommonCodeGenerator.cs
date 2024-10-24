@@ -66,11 +66,7 @@ public class CommonCodeGenerator
     public static async Task GenerateIndexAsync(string outputDirectory)
     {
         var indexFilePath = Path.Combine(outputDirectory, "index.ts");
-        if (File.Exists(indexFilePath))
-        {
-            File.Delete(indexFilePath);
-        }
-
+        if (File.Exists(indexFilePath)) File.Delete(indexFilePath);
         Log.Information("Remove index from [{0}]:", outputDirectory);
         var builder = new StringBuilder();
         var dirs = Directory.GetDirectories(outputDirectory);
