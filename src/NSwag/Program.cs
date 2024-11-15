@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using NSwag.Contants;
 using NSwag.Generators;
