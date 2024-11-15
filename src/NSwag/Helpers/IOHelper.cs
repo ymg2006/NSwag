@@ -24,6 +24,20 @@ namespace NSwag.Helpers
             return true;
         }
 
+        public static bool TryDeleteFile(string path)
+        {
+            try
+            {
+                File.Delete(path);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         static string NormalizeNewlines(string input)
         {
             return input.Replace("\r\n", "\n").Replace("\r", "\n");

@@ -32,9 +32,7 @@ public class ModelsScriptGenerator
         _utilitiesModuleName = caseConverter.Invoke(Constant.UtilsName);
     }
 
-    public string DirName => _dtoDirName;
-    public void SetDirName(string dirName) => _dtoDirName = dirName;
-
+    public void SetDtoPath(string dirName) => _dtoDirName = dirName;
 
     public async Task GenerateDtoFilesAsync(string outputDirectory)
     {
@@ -47,16 +45,24 @@ public class ModelsScriptGenerator
         var fileNames = new List<string>();
         foreach (var dtoClass in GenerateDtoClasses())
         {
-            var path = Path.Combine(targetFolder, CaseConverter.Invoke(dtoClass.Key) + ".ts");
+            var fileName = CaseConverter.Invoke(dtoClass.Key);
+            var path = Path.Combine(targetFolder, fileName + ".ts");
+            fileNames.Add(fileName);
             await IoHelper.HandleFileAsync(path, dtoClass.Value);
-            fileNames.Add(dtoClass.Key);
         }
         var indexFile = Path.Combine(targetFolder, "index.ts");
-        if (!string.IsNullOrWhiteSpace(_dtoDirName))
+
+        if (File.Exists(indexFile)) IoHelper.TryDeleteFile(indexFile);
+
+        var toDeleteFiles = Directory.GetFiles(targetFolder, "*.ts", SearchOption.TopDirectoryOnly)
+                .Where(x => !fileNames.Contains(Path.GetFileNameWithoutExtension(x)));    
+
+        foreach (var file in toDeleteFiles)
         {
-            if (File.Exists(indexFile)) File.Delete(indexFile);
-            await File.AppendAllLinesAsync(indexFile, fileNames.Select(c => $"export * from './{CaseConverter.Invoke(c)}';"), Encoding.UTF8);
+            IoHelper.TryDeleteFile(file);
         }
+
+        await File.AppendAllLinesAsync(indexFile, fileNames.Select(c => $"export * from './{CaseConverter.Invoke(c)}';"), Encoding.UTF8);
     }
 
     public IEnumerable<KeyValuePair<string, string>> GenerateDtoClasses()

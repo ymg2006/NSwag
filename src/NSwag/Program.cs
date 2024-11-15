@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using NSwag.Contants;
 using NSwag.Generators;
@@ -28,6 +29,8 @@ namespace NSwag
             {
                 throw new FileNotFoundException($"Not found config file from :{config.ConfigPath}");
             }
+
+            if (string.IsNullOrWhiteSpace(config.DtoPath)) config.DtoPath = "../dtos";
 
             Func<string, string> caseConverter;
             switch (config.FileCase)
@@ -63,41 +66,37 @@ namespace NSwag
             Log.Information("Use config file:[{0}]", configFilePath);
             var nSwagDocument = await NsWagDocumentHelper.LoadDocumentFromFileAsync(configFilePath);
             stopwatch.Stop();
-            Log.Information("NSwag config file loaded, use time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
+            Log.Information("NSwag config file loaded, used time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
             var outputDirectory = IoHelper.ReadOutputPath(nSwagDocument, configFilePath);
             Log.Information("Output directory is :[{0}]", outputDirectory);
             stopwatch.Restart();
-            // fetch swagger
+            // Fetch swagger
             var swaggerDocument = await OpenApiDocumentHelper.FromUrlAsync(nSwagDocument.SwaggerGenerators.FromDocumentCommand.Url);
             stopwatch.Stop();
-            Log.Information("Swagger content loaded, use time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
+            Log.Information("Swagger content loaded, used time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
             stopwatch.Restart();
             var settings = nSwagDocument.CodeGenerators.OpenApiToTypeScriptClientCommand.Settings;
-            settings.ExcludedParameterNames ??= Array.Empty<string>();
+            settings.ExcludedParameterNames ??= [];
             Constant.TsBaseType.AddRange(settings.ExcludedParameterNames);
             // Utilities
             var utilitiesScriptGenerator = new UtilitiesScriptGenerator(settings, swaggerDocument, caseConverter);
             await utilitiesScriptGenerator.GenerateUtilitiesFilesAsync(outputDirectory);
             stopwatch.Stop();
-            Log.Information("Generate Utilities.ts complete, use time:{0}ms",
-                stopwatch.Elapsed.TotalMilliseconds);
+            Log.Information("Generate utilities complete, used time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
             stopwatch.Restart();
-            // DtoClass
+            // Dto classes
             var modelsScriptGenerator = new ModelsScriptGenerator(settings, swaggerDocument, caseConverter);
-            modelsScriptGenerator.SetDirName(config.DtoPath);
+            modelsScriptGenerator.SetDtoPath(config.DtoPath);
             await modelsScriptGenerator.GenerateDtoFilesAsync(outputDirectory);
             stopwatch.Stop();
-            Log.Information("Generate dto files over, use time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
+            Log.Information("Generate dto files over, used time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
+            // Service proxies
             stopwatch.Restart();
             var clientsScriptGenerator = new ClientsScriptGenerator(settings, swaggerDocument, caseConverter);
-            clientsScriptGenerator.SetDtoPath(modelsScriptGenerator.DirName);
+            clientsScriptGenerator.SetDtoPath(config.DtoPath);
             await clientsScriptGenerator.GenerateClientClassFilesAsync(outputDirectory);
             stopwatch.Stop();
-            Log.Information("Generate client files over, use time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
-            stopwatch.Restart();
-            await CommonCodeGenerator.GenerateIndexAsync(outputDirectory);
-            stopwatch.Stop();
-            Log.Information("Generate index file over, use time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
+            Log.Information("Generate client files over, used time:{0}ms", stopwatch.Elapsed.TotalMilliseconds);
         }
     }
 }

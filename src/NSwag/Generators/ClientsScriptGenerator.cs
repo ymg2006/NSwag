@@ -47,21 +47,40 @@ namespace NSwag.Generators
             _utilitiesModuleName = caseConverter.Invoke(Constant.UtilsName);
         }
 
-        public void SetDtoPath(string dtoPathName)
-        {
-            _dtoDirName = dtoPathName;
-        }
+        public void SetDtoPath(string dirName) => _dtoDirName = dirName;
 
         public async Task GenerateClientClassFilesAsync(string outputDirectory)
         {
+            //output directory exists for sure since it is created in GenerateDtoFilesAsync
+            var fileNames = new List<string>();
             foreach (var clientClass in GenerateClientClasses())
             {
-                var path = Path.Combine(outputDirectory, CaseConverter.Invoke(clientClass.Key) + ".ts");
+                var fileName = CaseConverter.Invoke(clientClass.Key);
+                var path = Path.Combine(outputDirectory, fileName + ".ts");
                 var classCode = clientClass.Value;
                 var commonImportCode = await CommonCodeGenerator.GetCommonImportFromUtilitiesAsync(outputDirectory, _utilitiesModuleName);
                 classCode = commonImportCode + classCode;
+                fileNames.Add(fileName);
                 await IoHelper.HandleFileAsync(path, CommonCodeGenerator.AppendDisabledLint(classCode));
             }
+
+            var indexFile = Path.Combine(outputDirectory, "index.ts");
+            if (File.Exists(indexFile)) IoHelper.TryDeleteFile(indexFile);
+
+            var utilsName = CaseConverter.Invoke(Constant.UtilsName);
+            var toDeleteFiles = Directory.GetFiles(outputDirectory, "*.ts", SearchOption.TopDirectoryOnly)
+                .Where(x =>
+                {
+                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(x);
+                    return fileNameWithoutExtension != utilsName && !fileNames.Contains(fileNameWithoutExtension);
+                });
+
+            foreach (var file in toDeleteFiles)
+            {
+                IoHelper.TryDeleteFile(file);
+            }
+
+            await File.AppendAllLinesAsync(indexFile, fileNames.Select(c => $"export * from './{CaseConverter.Invoke(c)}';"), Encoding.UTF8);
         }
 
         /// <summary>

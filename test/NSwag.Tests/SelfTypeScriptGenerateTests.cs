@@ -28,9 +28,9 @@ namespace NSwag.Tests
             _openApiDocument = LoadOpenApi().Result;
             var settings = nSwagDocument.CodeGenerators
                 .OpenApiToTypeScriptClientCommand.Settings;
-            _selfTypeScriptGenerator = new ClientsScriptGenerator(settings, _openApiDocument, CaseConverters.ToPascalCase);
-            _utilsScriptGenerator = new UtilitiesScriptGenerator(settings, _openApiDocument, CaseConverters.ToPascalCase);
-            _modelsScriptGenerator = new ModelsScriptGenerator(settings, _openApiDocument, CaseConverters.ToPascalCase);
+            _selfTypeScriptGenerator = new ClientsScriptGenerator(settings, _openApiDocument, x => x);
+            _utilsScriptGenerator = new UtilitiesScriptGenerator(settings, _openApiDocument, x => x);
+            _modelsScriptGenerator = new ModelsScriptGenerator(settings, _openApiDocument, x => x);
         }
 
         protected async Task<NSwagDocument> LoadSettings()
