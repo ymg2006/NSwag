@@ -8,27 +8,7 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    7z a NSwag.zip %APPVEYOR_BUILD_FOLDER%\NSwag\bin\Release\*.*
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.CoreUtility.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Language.Intellisense.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Language.Intellisense.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Text.Data.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Text.Logic.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Text.UI.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Text.UI.Wpf.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Validation.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\Microsoft.VisualStudio.Language.dll
-
-    del %APPVEYOR_BUILD_FOLDER%\MyOpCodesExtension\bin\Release\StreamJsonRpc.dll
+    7z a NSwag.zip %APPVEYOR_BUILD_FOLDER%\NSwag\bin\Release\net8.0\*.*
 
     appveyor PushArtifact NSwag.zip
 deploy:
