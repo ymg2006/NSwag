@@ -1,26 +1,9 @@
 import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { createInterface } from 'readline';
-function askQuestion(query) {
-    const rl = createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
 
-    return new Promise(resolve => rl.question(query, ans => {
-        rl.close();
-        resolve(ans);
-    }))
-}
 const cwd = path.dirname(process.argv[1]);
-let targetService = "";
-if (process.argv.length < 3) {
-    targetService = await askQuestion('Please input the target service name > ')
-} else {
-    targetService = process.argv[2];
-}
-const configPath = path.join(cwd, 'nswag', `service.config${!!targetService ? "." + targetService : ""}.nswag`);
+const configPath = path.join(cwd, `service.config.nswag`);
 const configFileAccess = fs.existsSync(configPath);
 if (!configFileAccess) {
     const errorMessage = "Target service [" + targetService + "] config dose not exists, \n Please confirm path [" + configPath + "] is exist.";
@@ -29,9 +12,9 @@ if (!configFileAccess) {
 
 let execPath = "";
 if (process.platform.startsWith("win")) {
-    execPath = path.join(cwd, 'nswag', 'win-x64', 'NSwagTsSplitter.exe');
+    execPath = path.join(cwd, 'bin', 'win-x64', 'NSwag.exe');
 } else if (process.platform.startsWith("linux")) {
-    execPath = path.join(cwd, 'nswag', 'linux-x64', 'NSwagTsSplitter');
+    execPath = path.join(cwd, 'bin', 'linux-x64', 'NSwag');
     fs.access(execPath, fs.constants.X_OK, function (error) {
         if (error) {
             exec('sudo chmod', ['+', 'x', execPath], function (err, stdout, stderr) {
@@ -42,7 +25,7 @@ if (process.platform.startsWith("win")) {
         }
     });
 } else if (process.platform.startsWith("mac")) {
-    execPath = path.join(cwd, 'nswag', 'osx-x64', 'NSwagTsSplitter');
+    execPath = path.join(cwd, 'bin', 'osx-x64', 'NSwag');
     fs.access(execPath, fs.constants.X_OK, function (error) {
         if (error) {
             exec('sudo chmod', ['+', 'x', execPath], function (err, stdout, stderr) {
@@ -53,10 +36,10 @@ if (process.platform.startsWith("win")) {
         }
     });
 }
-exec(`${execPath} -c ${configPath}`,
+exec(`"${execPath}" -c "nswag/service.config.nswag" -fc "kebab-case"`,
     function (err, stdout, stderr) {
         if (err) {
             console.error(err);
         }
         console.log(stdout)
-    })
+    });
