@@ -8,7 +8,7 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    7z a NSwag.zip %APPVEYOR_BUILD_FOLDER%\NSwag\bin\Release\net8.0\*.*
+    7z a NSwag.zip %APPVEYOR_BUILD_FOLDER%\src\NSwag\bin\Release\net8.0\*.*
 
     appveyor PushArtifact NSwag.zip
 deploy:
