@@ -30,7 +30,7 @@ namespace NSwag.Helpers
             {
                 File.Delete(path);
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ApplicationIcon>app.ico</ApplicationIcon>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
@@ -19,12 +19,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NJsonSchema" Version="11.0.2" />
-		<PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="11.0.2" />
-		<PackageReference Include="NSwag.CodeGeneration.TypeScript" Version="14.1.0" />
-		<PackageReference Include="NSwag.Commands" Version="14.1.0" />
-		<PackageReference Include="NSwag.Core" Version="14.1.0" />
+		<PackageReference Include="NJsonSchema" Version="11.1.0" />
+		<PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="11.1.0" />
+		<PackageReference Include="NSwag.CodeGeneration.TypeScript" Version="14.2.0" />
+		<PackageReference Include="NSwag.Commands" Version="14.2.0" />
+		<PackageReference Include="NSwag.Core" Version="14.2.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 	</ItemGroup>
 
 </Project>
