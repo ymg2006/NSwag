@@ -9,7 +9,7 @@ using NJsonSchema.CodeGeneration;
 using NJsonSchema.CodeGeneration.TypeScript;
 using NJsonSchema.CodeGeneration.TypeScript.Models;
 using NSwag.CodeGeneration.TypeScript;
-using NSwag.Contants;
+using NSwag.Constants;
 using NSwag.Extensions;
 using NSwag.Helpers;
 
@@ -129,7 +129,7 @@ public class ModelsScriptGenerator
                 var propertyType = property.Type.IndexOf("[", StringComparison.Ordinal) > 0
                     ? property.Type.Replace("[]", "")
                     : property.Type;
-                if (!Constant.TsBaseType.Contains(propertyType) && !property.IsDictionary &&
+                if (!propertyType.IsTypeScriptBaseType() && !property.IsDictionary &&
                     !actualProperty.Value.IsEnumeration)
                 {
                     typeNames.AddIfNot(propertyType, new List<string> { propertyType });
@@ -144,7 +144,7 @@ public class ModelsScriptGenerator
                     property.DictionaryItemType.IndexOf("[", StringComparison.Ordinal) > 0
                         ? property.DictionaryItemType.Replace("[]", "")
                         : property.DictionaryItemType;
-                if (!Constant.TsBaseType.Contains(propertyDictionaryItemType))
+                if (!propertyDictionaryItemType.IsTypeScriptBaseType())
                 {
                     typeNames.AddIfNot(propertyDictionaryItemType, new List<string>() { propertyDictionaryItemType });
                 }
@@ -157,7 +157,7 @@ public class ModelsScriptGenerator
                 var propertyArrayItemType = property.ArrayItemType.IndexOf("[", StringComparison.Ordinal) > 0
                     ? property.ArrayItemType.Replace("[]", "")
                     : property.ArrayItemType;
-                if (!Constant.TsBaseType.Contains(propertyArrayItemType))
+                if (!propertyArrayItemType.IsTypeScriptBaseType())
                 {
                     typeNames.AddIfNot(propertyArrayItemType, new List<string>() { propertyArrayItemType });
                 }

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using NSwag.Contants;
+using NSwag.Constants;
 using NSwag.Generators;
 using NSwag.Helpers;
 using Serilog;

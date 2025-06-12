@@ -7,7 +7,7 @@ using NJsonSchema.CodeGeneration;
 using NJsonSchema.CodeGeneration.TypeScript;
 using NSwag.CodeGeneration.TypeScript;
 using NSwag.CodeGeneration.TypeScript.Models;
-using NSwag.Contants;
+using NSwag.Constants;
 using NSwag.Helpers;
 
 namespace NSwag.Generators;

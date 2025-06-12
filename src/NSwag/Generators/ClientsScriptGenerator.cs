@@ -10,7 +10,7 @@ using NJsonSchema.CodeGeneration.TypeScript;
 using NSwag.CodeGeneration.OperationNameGenerators;
 using NSwag.CodeGeneration.TypeScript;
 using NSwag.CodeGeneration.TypeScript.Models;
-using NSwag.Contants;
+using NSwag.Constants;
 using NSwag.Extensions;
 using NSwag.Helpers;
 
@@ -152,7 +152,7 @@ namespace NSwag.Generators
                     var parameterType = parameter.Type.IndexOf("[", StringComparison.Ordinal) > 0
                         ? parameter.Type.Replace("[]", "")
                         : parameter.Type;
-                    if (!Constant.TsBaseType.Contains(parameterType))
+                    if (!parameterType.IsTypeScriptBaseType())
                     {
                         typeNames.Add(parameterType);
                     }
@@ -166,7 +166,7 @@ namespace NSwag.Generators
                 var resultType = operation.ResultType.IndexOf("[", StringComparison.Ordinal) > 0
                     ? operation.ResultType.Replace("[]", "")
                     : operation.ResultType;
-                if (!Constant.TsBaseType.Contains(resultType))
+                if (!resultType.IsTypeScriptBaseType())
                 {
                     typeNames.Add(resultType);
                 }
@@ -181,7 +181,7 @@ namespace NSwag.Generators
                     : operation.ExceptionType;
                 var exceptionTypes = exceptionType.Split("|").Select(c => c.Trim())
                     .Where(c => !string.IsNullOrWhiteSpace(c))
-                    .Where(c => !Constant.TsBaseType.Contains(c))
+                    .Where(c => !c.IsTypeScriptBaseType())
                     .Distinct();
                 typeNames.AddRange(exceptionTypes);
                 if (Constant.UtilitiesModules.Contains(exceptionType))
